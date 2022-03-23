@@ -1,0 +1,6 @@
+[core]
+    remote = myremote
+['remote "myremote"']
+    url = /home/udacity/remote_dvc/
+['remote "newremote"']
+    url = s3://malekproject3
