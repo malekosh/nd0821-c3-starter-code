@@ -1,6 +1,6 @@
 [core]
-    remote = myremote
+    remote = storage
 ['remote "myremote"']
     url = /home/udacity/remote_dvc/
-['remote "newremote"']
+['remote "storage"']
     url = s3://malekproject3
