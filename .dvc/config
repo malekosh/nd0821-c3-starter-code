@@ -1,5 +1,6 @@
 [core]
     remote = storage
+    autostage = true
 ['remote "myremote"']
     url = /home/udacity/remote_dvc/
 ['remote "storage"']

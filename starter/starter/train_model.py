@@ -1,13 +1,19 @@
 # Script to train machine learning model.
+import os
+import pandas as pd
+from ml.model import train_model, compute_model_metrics, inference, save_model
+from ml.data import process_data
 
-from sklearn.model_selection import train_test_split
 
-# Add the necessary imports for the starter code.
+top_path = os.path.abspath(os.path.join(os.path.dirname(os.path.abspath(__file__)), os.pardir))
+data_path = os.path.join(top_path,'data')
+model_path = os.path.join(top_path,'model/model.pkl')
 
-# Add code to load in the data.
+census_train_path = os.path.join(data_path, 'train_census.csv')
+census_test_path = os.path.join(data_path, 'val_census.csv')
 
-# Optional enhancement, use K-fold cross validation instead of a train-test split.
-train, test = train_test_split(data, test_size=0.20)
+train_data = pd.read_csv(census_train_path)
+test_data = pd.read_csv(census_test_path)
 
 cat_features = [
     "workclass",
@@ -20,9 +26,11 @@ cat_features = [
     "native-country",
 ]
 X_train, y_train, encoder, lb = process_data(
-    train, categorical_features=cat_features, label="salary", training=True
+    train_data, categorical_features=cat_features, label="salary", training=True
 )
 
-# Proces the test data with the process_data function.
+X_test, y_test, encoder, lb = process_data(
+    test_data, categorical_features=cat_features, label="salary", training=False, encoder=encoder, lb=lb)
 
-# Train and save a model.
+model = train_model(X_train, y_train)
+save_model(model, model_path)
