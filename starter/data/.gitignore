@@ -1,3 +1,5 @@
 
 /census.csv
 /census_clean.csv
+/train_census.csv
+/val_census.csv
