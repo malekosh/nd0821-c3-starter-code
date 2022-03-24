@@ -10,7 +10,7 @@ from sklearn.impute import SimpleImputer
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import OrdinalEncoder, OneHotEncoder, FunctionTransformer, StandardScaler
 
-from sklearn.ensemble import RandomForestRegressor
+from sklearn.ensemble import RandomForestClassifier
 from sklearn.metrics import mean_absolute_error
 from sklearn.pipeline import Pipeline, make_pipeline
 
@@ -30,7 +30,7 @@ def train_model(X_train, y_train):
     model
         Trained machine learning model.
     """
-    random_Forest = RandomForestRegressor(n_estimators=100,  max_depth=15)
+    random_Forest = RandomForestClassifier(n_estimators=100,  max_depth=15)
     random_Forest.fit(X_train, y_train)
     return random_Forest
 

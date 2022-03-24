@@ -2,7 +2,7 @@
 import os
 import pandas as pd
 from ml.model import train_model, compute_model_metrics, inference, save_model
-from ml.data import process_data
+from ml.data import process_data, load_data
 
 
 top_path = os.path.abspath(os.path.join(os.path.dirname(os.path.abspath(__file__)), os.pardir))
@@ -12,8 +12,8 @@ model_path = os.path.join(top_path,'model/model.pkl')
 census_train_path = os.path.join(data_path, 'train_census.csv')
 census_test_path = os.path.join(data_path, 'val_census.csv')
 
-train_data = pd.read_csv(census_train_path)
-test_data = pd.read_csv(census_test_path)
+train_data = load_data(census_train_path)
+test_data = load_data(census_test_path)
 
 cat_features = [
     "workclass",
