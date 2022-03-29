@@ -8,6 +8,7 @@ from ml.data import process_data, load_data
 top_path = os.path.abspath(os.path.join(os.path.dirname(os.path.abspath(__file__)), os.pardir))
 data_path = os.path.join(top_path,'data')
 model_path = os.path.join(top_path,'model/model.pkl')
+encoder_path = os.path.join(top_path,'model/encoder.pkl')
 
 census_train_path = os.path.join(data_path, 'train_census.csv')
 census_test_path = os.path.join(data_path, 'val_census.csv')
@@ -28,6 +29,8 @@ cat_features = [
 X_train, y_train, encoder, lb = process_data(
     train_data, categorical_features=cat_features, label="salary", training=True
 )
+
+save_model(encoder, encoder_path)
 
 X_test, y_test, encoder, lb = process_data(
     test_data, categorical_features=cat_features, label="salary", training=False, encoder=encoder, lb=lb)

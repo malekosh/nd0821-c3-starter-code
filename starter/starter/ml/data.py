@@ -73,4 +73,5 @@ def process_data(
 
 def load_data(data_path):
     data = pd.read_csv(data_path)
+    data.drop(data.filter(regex="Unname"), axis=1, inplace=True)
     return data
