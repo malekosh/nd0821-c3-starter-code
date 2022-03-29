@@ -2,7 +2,7 @@ import os
 from starter.ml.model import train_model, compute_model_metrics, inference, load_model
 from starter.ml.data import process_data, load_data
 
-top_path = os.path.abspath(os.path.join(os.path.dirname(os.path.abspath(__file__)), os.pardir))
+top_path = os.path.abspath(os.path.dirname(os.path.abspath(__file__)))
 model_path = os.path.join(top_path,'model/model.pkl')
 data_path = os.path.join(top_path,'data/census_clean.csv')
 test_path = os.path.join(top_path,'data/val_census.csv')
