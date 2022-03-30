@@ -24,7 +24,7 @@ def test_over_50k():
     sample = over.to_dict()
     sample = { key.replace('_','-') : (int(val) if not isinstance(val,str) else val)  for key, val in sample.items()}
     
-    response = client.post("/inference", json=json.dumps(sample))
+    response = client.post("/inference", data=json.dumps(sample))
     assert response.status_code == 200 
     assert response.json()['pred'] == '>50K'
                     
@@ -37,6 +37,6 @@ def test_under_50k():
     sample = under.to_dict()
     sample ={ key.replace('_','-') : (int(val) if not isinstance(val,str) else val)  for key, val in sample.items()}
     
-    response = client.post("/inference", json=json.dumps(sample))
+    response = client.post("/inference", data=json.dumps(sample))
     assert response.status_code == 200 
     assert response.json()['pred'] == '<=50K'
