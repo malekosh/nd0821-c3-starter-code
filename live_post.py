@@ -18,7 +18,7 @@ data ={'age': 25,
     'native_country': 'United-States'
       }
 
-r = requests.post("https://my-mlops-app.herokuapp.com/headers/", data=json.dumps(data))
+r = requests.post("https://my-mlops-app.herokuapp.com/inference/", data=json.dumps(data))
 
 print('Status code: ',r.status_code)
 print('inference: ',r.json())
