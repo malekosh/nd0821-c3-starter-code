@@ -62,7 +62,7 @@ async def say_hello():
 
 
 
-@app.post("/inference/")
+@app.post("/inference")
 async def update_item(
     *,
     item: CensusEntry = Body(
