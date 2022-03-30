@@ -4,15 +4,8 @@ import os
 
 import pandas as pd
 import numpy as np
-from sklearn.compose import ColumnTransformer
-from sklearn.feature_extraction.text import TfidfVectorizer
-from sklearn.impute import SimpleImputer
-from sklearn.model_selection import train_test_split
-from sklearn.preprocessing import OrdinalEncoder, OneHotEncoder, FunctionTransformer, StandardScaler
 
 from sklearn.ensemble import RandomForestClassifier
-from sklearn.metrics import mean_absolute_error
-from sklearn.pipeline import Pipeline, make_pipeline
 
 # Optional: implement hyperparameter tuning.
 def train_model(X_train, y_train):
@@ -85,3 +78,47 @@ def load_model(model_path):
     with open(model_path, 'rb') as file:
         model = pickle.load(file)
     return model
+
+def get_TP_TN_FP_FN(X, cat, sub_cat):
+    TP = X.loc[(X['y']==1) & (X['pred']==1) & (X[cat]==sub_cat)].shape[0]
+    TN = X.loc[(X['y']==0) & (X['pred']==0) & (X[cat]==sub_cat)].shape[0]
+    FN = X.loc[(X['y']==1) & (X['pred']==0) & (X[cat]==sub_cat)].shape[0]
+    FP = X.loc[(X['y']==0) & (X['pred']==1) & (X[cat]==sub_cat)].shape[0]
+    
+    return TP, TN, FN, FP
+
+def get_eval_metrics(TP, TN, FN, FP):
+    if not TP:
+        TP = 1e-7
+    recall = TP / (TP+FN)
+    prec = TP / (TP+FP)
+    fscore = (2*prec*recall) / (prec+recall)
+    return recall, prec, fscore
+
+def create_pd_dict(sub_cat, recall, prec, fscore):
+    return {'sub-category': sub_cat, 'recall': round(recall,2), 'precision': round(prec,2), 'fscore': round(fscore,2)}
+    
+
+def get_metrics_slices_per_category(X, y, y_pred, cat, value=None):
+    X = X.drop(['salary'], axis=1)
+    X['y'] =  y.tolist()
+    X['pred'] = y_pred.tolist()
+    
+    if value is not None:
+        TP, TN, FN, FP = get_TP_TN_FP_FN(X, cat, value)
+        recall, prec, fscore = get_eval_metrics(TP, TN, FN, FP)
+        row_list = [create_pd_dict(s, recall, prec, fscore)]
+    else:
+        sub_cat = X[cat].unique().tolist()
+
+        row_list = []
+        for s in sub_cat:
+            TP, TN, FN, FP = get_TP_TN_FP_FN(X, cat, s)
+
+            recall, prec, fscore = get_eval_metrics(TP, TN, FN, FP)
+            row_dict = create_pd_dict(s, recall, prec, fscore)
+            row_list.append(row_dict)
+
+    sub_cat_dataframe = pd.DataFrame.from_dict(row_list, orient='columns')
+    
+    return sub_cat_dataframe

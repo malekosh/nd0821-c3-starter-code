@@ -1,4 +1,3 @@
-# Put the code for your API here.
 import os
 from typing import Union
 from fastapi import FastAPI, Body
@@ -40,7 +39,7 @@ cat_features = [
 class CensusEntry(BaseModel):
     age: int = None
     workclass: str = None
-    fnlwgt: int = None
+    fnlgt: int = None
     education: str = None
     education_num: int = Field(None, alias='education-num')
     marital_status: str = Field(None, alias='marital-status')
@@ -58,12 +57,12 @@ class CensusEntry(BaseModel):
 
 @app.get("/")
 async def say_hello():
-    return {"greetings": "from Malek"}
+    return {"greetings from Malek": "This app is to infer salary category from census data"}
 
 
 
 
-@app.post("/headers/")
+@app.post("/inference/")
 async def update_item(
     *,
     item: CensusEntry = Body(
@@ -72,7 +71,7 @@ async def update_item(
             'example1': {
                 'age': 25,
                 'workclass': 'State-gov',
-                'fnlwgt':  76413,
+                'fnlgt':  76413,
                 'education': 'Bachelors',
                 'education_num': 9,
                 'marital_status': 'Never-married',
@@ -88,7 +87,7 @@ async def update_item(
             'example2': {
                 'age': 28,
                 'workclass': 'State-gov',
-                'fnlwgt':  76413,
+                'fnlgt':  76413,
                 'education': 'Bachelors',
                 'education_num': 9,
                 'marital_status': 'Married',
@@ -108,6 +107,7 @@ async def update_item(
     dictionary = item.dict(by_alias=True)
     dataframe = pd.DataFrame.from_dict(dictionary, 'index').transpose()
     
+    print('model_path', model_path)
     X_test, _, _, lb = process_data(
     dataframe, categorical_features=cat_features, label=None, training=False, encoder=encoder, lb=None)
     
@@ -116,7 +116,7 @@ async def update_item(
     if int(pred):
         pred = '>50K'
     else:
-        pred = '>50K'
+        pred = '<=50K'
     
     print(pred)
     

@@ -5,7 +5,7 @@ from ml.model import train_model, compute_model_metrics, inference, save_model
 from ml.data import process_data, load_data
 
 
-top_path = os.path.abspath(os.path.join(os.path.dirname(os.path.abspath(__file__)), os.pardir))
+top_path = os.path.join(os.path.dirname(os.path.abspath(__file__)),os.pardir)
 data_path = os.path.join(top_path,'data')
 model_path = os.path.join(top_path,'model/model.pkl')
 encoder_path = os.path.join(top_path,'model/encoder.pkl')
