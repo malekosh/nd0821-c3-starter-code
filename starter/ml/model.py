@@ -107,7 +107,7 @@ def get_metrics_slices_per_category(X, y, y_pred, cat, value=None):
     if value is not None:
         TP, TN, FN, FP = get_TP_TN_FP_FN(X, cat, value)
         recall, prec, fscore = get_eval_metrics(TP, TN, FN, FP)
-        row_list = [create_pd_dict(s, recall, prec, fscore)]
+        row_list = [create_pd_dict(value, recall, prec, fscore)]
     else:
         sub_cat = X[cat].unique().tolist()
 
